@@ -1,0 +1,9 @@
+
+# Some example stuff.
+	INT_LITERAL x 100
+	MOVE y x
+	STR_LITERAL hw b64:SGVsbG8sIHdvcmxkIQ==
+	IF x
+		MOVE z x
+	END
+
