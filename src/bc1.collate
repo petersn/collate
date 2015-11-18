@@ -1,9 +1,12 @@
 
 # Some example stuff.
-	INT_LITERAL x 100
-	MOVE y x
-	STR_LITERAL hw b64:SGVsbG8sIHdvcmxkIQ==
-	IF x
-		MOVE z x
-	END
+
+FUNCTION f x y
+	BINARY result x add y
+	RETURN result
+END
+
+INT_LITERAL x1 10
+INT_LITERAL x2 20
+CALL x3 f x1 x2
 

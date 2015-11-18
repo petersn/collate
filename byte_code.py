@@ -2,11 +2,18 @@
 
 valid_opcodes = {
 	"MOVE": 2,
+	"COIN_FLIP": 1,
+	"END_OF_INPUT": 0,
 	"INT_LITERAL": 2,
 	"STR_LITERAL": 2,
+	"ARRAY_LITERAL": None,
+	"FUNCTION": None,
+	"CALL": None,
+	"RETURN": 1,
 	"UNARY": 3,
 	"BINARY": 4,
 	"IF": 1,
+	"WHILE": 1,
 	"END": 0,
 }
 
@@ -32,12 +39,14 @@ def parse_bytecode(input_text):
 		line = line.split(" ")
 		opcode = line[0]
 		assert opcode in valid_opcodes, "Invalid opcode: %r" % opcode
-		assert len(line) - 1 == valid_opcodes[opcode], "Wrong number of operands to %r (was %i, should have been %i)" % (opcode, len(line) - 1, valid_opcodes[opcode])
+		if valid_opcodes[opcode] != None:
+			assert len(line) - 1 == valid_opcodes[opcode], \
+				"Wrong number of operands to %r (was %i, should have been %i)" % (opcode, len(line) - 1, valid_opcodes[opcode])
 		if opcode == "INT_LITERAL":
 			line[2] = int(line[2])
 		elif opcode == "STR_LITERAL":
 			line[2] = decode_string_literal(line[2])
-		elif opcode in ("IF", "WHILE"):
+		elif opcode in ("IF", "WHILE", "FUNCTION"):
 			line.append([])
 			stack[-1].append(line)
 			stack.append(line[-1])
@@ -45,6 +54,8 @@ def parse_bytecode(input_text):
 		elif opcode == "END":
 			stack.pop()
 			continue
+		elif opcode == "END_OF_INPUT":
+			break
 		stack[-1].append(line)
 	return bytecode
 
